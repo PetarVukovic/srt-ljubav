@@ -1,0 +1,48 @@
+[project]
+name = "srt-ljubav"
+version = "0.1.0"
+description = "Batch SRT translation pipeline: Croatian lecture transcripts to 33 languages via Gemini, with YouTube-quality subtitle formatting."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    # <3.6 pinned: translator.py overrides the private _process_translated_lines
+    # (batch coverage guard); re-verify the signature before any bump.
+    "gemini-srt-translator>=3.8.3,<3.9",
+    # translator.py classifies transient failures by type (ServerError, httpx
+    # transport errors); both already arrive through gemini-srt-translator.
+    "google-genai>=2.19",
+    "httpx>=0.28",
+    # sync-db only; imported lazily in db.connect() so neither the translation
+    # workers nor the test suite ever need a database driver at import time.
+    "psycopg[binary]>=3.2",
+    "srt>=3.5.3",
+]
+
+[project.scripts]
+srt-ljubav = "srtljubav.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/srtljubav"]
+
+[dependency-groups]
+dev = [
+    "pytest>=8",
+    "ruff>=0.6",
+]
+
+[tool.ruff]
+src = ["src", "tests"]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"

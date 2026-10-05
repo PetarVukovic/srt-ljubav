@@ -1,0 +1,31 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+.env
+test_outputs/
+usage_logs/
+input_files
+
+
+# graft's local graph cache — regenerable, not committed (run `graft build`).
+graft/
+
+# Local-only: personal tooling, handoffs, reports, one-off batch scripts, caches.
+.claude/
+.codex/
+.mcp.json
+.ignore
+.DS_Store
+.pytest_cache/
+.ruff_cache/
+tasks/
+docs/
+csv_info_pricing/
+prijevodi_2026-09.sh
